@@ -9,9 +9,8 @@ public class Strings {
 
     public static String javaVariable() {
         //regular expression for testing syntax of Java variable names
-        //only ASCII symbols are allowed 
-        
-        return "^(?!.*\\b("+ ServiceWords() +")\\b)[A-Za-z_$][A-Za-z0-9_$]*$";
+        //only ASCII symbols are allowed  
+        return "^(?!_\\b)(?!.*\\b("+ ServiceWords() +")\\b)[A-Za-z_$][A-Za-z0-9_$]*$";
     }
 
     public static String ServiceWords() {

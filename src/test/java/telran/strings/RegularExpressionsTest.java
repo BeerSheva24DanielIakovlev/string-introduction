@@ -11,7 +11,7 @@ public class RegularExpressionsTest {
     @Test
     void javaVariableTest() {
         String[] trueStrings = {"VasFm$", "a99999", "$$$", "Testing"};
-        String[] falseStrings = {"9ujk", "", "@#$%^&*", "KNU9**", "boolean"};
+        String[] falseStrings = {"9ujk", "", "@#$%^&*", "KNU9**", "boolean", "_"};
         String regex = javaVariable();
         for (int i = 0; i < trueStrings.length; i++) {
             assertTrue(trueStrings[i].matches(regex));
