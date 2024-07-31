@@ -1,6 +1,18 @@
 package telran.strings;
 
+import java.util.Arrays;
+
 public class Strings {
+    static final String keyWords[] = { "abstract", "assert", "boolean",
+    "break", "byte", "case", "catch", "char", "class", "const",
+    "continue", "default", "do", "double", "else", "enum", "extends", "false",
+    "final", "finally", "float", "for", "goto", "if", "implements",
+    "import", "instanceof", "int", "interface", "long", "native",
+    "new", "null", "package", "private", "protected", "public",
+    "return", "short", "static", "strictfp", "super", "switch",
+    "synchronized", "this", "throw", "throws", "transient", "true",
+    "try", "void", "volatile", "while" };
+
     public static String firstName() {
         //regex for strings starting with capital letter and rest as lowercase letters
         //minimal length is 5 letters
@@ -13,7 +25,11 @@ public class Strings {
         return "^(?!_\\b)(?!.*\\b("+ ServiceWords() +")\\b)[A-Za-z_$][\\w_$]*$";
     }
 
-    static final String ServiceWords() {
+    public static String chisla() {
+        return "[0-9]*";
+    }
+
+    public static String ServiceWords() {
         String serviceWords = "";
         String[] service_words = {"abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class",
         "const", "continue", "default", "do", "double", "else", "enum", "extends", "final",
@@ -35,7 +51,7 @@ public class Strings {
     }
 
     public static String ipV40ctet() {
-        return "^([0-1]?\\d{1,2}|2([0-4]\\d|5[0-5]))$";
+        return "([0-1]?\\d{1,2}|2([0-4]\\d|5[0-5]))";
     }
 
     public static String ipV4Adress() {
@@ -45,7 +61,7 @@ public class Strings {
 
     public static String stringWithJavaNames(String names) {
         String [] tokens = names.split("\\s+");
-        int i = getFirstJavaNameIndex(tokens, -1);
+        int i = getJavaNameIndex(tokens, -1);
         String res = "";
         if (i >= 0) {
             res = tokens[i];
@@ -56,9 +72,9 @@ public class Strings {
         return res;
     }
 
-    private static int getFirstJavaNameIndex(String[] tokens, int i) {
+    private static int getJavaNameIndex(String[] tokens, int i) {
         i++;
-        while(i < tokens.length && isJavaName(tokens[i])) {
+        while(i < tokens.length && !isJavaName(tokens[i])) {
             i++;
         }
         return i < tokens.length ? i : -1;
@@ -69,18 +85,57 @@ public class Strings {
     }
 
     public static boolean isArithmeticExpression(String expr) {
-        //TODO
-        //1. brackets 
-        //right position of open / close bracket is matter of regex
-        //matching between open and close bracket is matter of the method you are supposed to write
-        //based on a counter. If counter is negarive - no matching;
-        //if at ending up going throw a string the counter doesn't equal 0 - no matching
-        //matching may be only in one case: at the ending up of going the counter will be 0
-        //only binary operations
-        //Operator - regular expression for one out of 4 arithmetic operators [*/+-]
-        //Operand May be either Java variable name or number (better any)
-        //binary operator is delimiter between two 
+        boolean res = true;
+        boolean res2 = false;
+
+        boolean res1 = brackets(expr);
         
-        return false;
+        String[] expr1 = stringWithTokens(expr); 
+
+        for(String c : expr1) {
+           /*String regex = javaVariable() + chisla();
+            if(!c.matches(regex)) {
+                res2 = false;
+                break;
+            }*/
+            String regex1 = javaVariable();
+            String regex2 = chisla();
+            if(c.matches(regex1) || c.matches(regex2)) {
+                res2 = true; 
+            }
+        } 
+         
+        if(!res1 || !res2) {
+            res = false;
+        }
+
+        return res;
+    }
+
+    public static String[] stringWithTokens(String names) {
+        String[] tokens = names.split("[^A-Za-z0-9_$]+");
+        return tokens;
+    }
+
+    public static boolean brackets(String names) {
+        char[] stroka = names.toCharArray();
+        int a = 0;
+        boolean res = true;
+        for(char c : stroka) {
+            if (c == '(') {
+                a++;
+            }
+            else if (c == ')') {
+                a--;
+                if (a < 0) {
+                    res = false;
+                    break;
+                }
+            }
+        }
+        if (a != 0) {
+            res = false;
+        }
+        return res;
     }
 }

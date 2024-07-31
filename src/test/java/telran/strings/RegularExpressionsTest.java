@@ -1,6 +1,7 @@
 package telran.strings;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -95,5 +96,37 @@ public class RegularExpressionsTest {
         String names = "123 1a _ abs int enum null lmn";
         String expected = "abs lmn";
         assertEquals(expected, Strings.stringWithJavaNames(names));
+    }
+    @Test
+    void TokensTest() {
+        String names = "ASDadAD) * + -==(564564+=";
+        String[] expected = {"ASDadAD", "564564"};
+        String[] result = Strings.stringWithTokens(names);
+        assertArrayEquals(expected, result);
+    }
+    @Test
+    void bracketsTest() {
+        String[] TrueStr = {"()", "(())", "()()"};
+        String[] FalseStr = {"ASDadAD) * + -==(564564+=", "())", "()("};
+        for (String str : TrueStr) {
+            assertTrue(Strings.brackets(str));
+        }
+
+        for (String str : FalseStr) {
+            assertFalse(Strings.brackets(str));
+        }
+        
+    }
+    @Test
+    void isArithmeticExpressionTest() {
+        String[] TrueAri = {"(play+1)*6", "12/6+perebor", "(sol+10)*(12-qwErty$)"};
+        String[] FalseAri = {"ASDadAD) * + -==(564564+=", "())", "()("};
+        for (String str : TrueAri) {
+            assertTrue(Strings.isArithmeticExpression(str));
+        }
+
+        for (String str : FalseAri) {
+            assertFalse(Strings.isArithmeticExpression(str));
+        }
     }
 }
