@@ -28,7 +28,6 @@ public class Strings {
     public static String chisla() {
         return "[0-9]*";
     }
-
     public static String ServiceWords() {
         String serviceWords = "";
         String[] service_words = {"abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class",
@@ -86,26 +85,27 @@ public class Strings {
 
     public static boolean isArithmeticExpression(String expr) {
         boolean res = true;
-        boolean res2 = false;
 
         boolean res1 = brackets(expr);
+        boolean res3 = operators(expr);
         
         String[] expr1 = stringWithTokens(expr); 
+        String regex1 = javaVariable();
+        String regex2 = chisla();
+        boolean res2 = false;
 
         for(String c : expr1) {
-           /*String regex = javaVariable() + chisla();
-            if(!c.matches(regex)) {
-                res2 = false;
-                break;
-            }*/
-            String regex1 = javaVariable();
-            String regex2 = chisla();
             if(c.matches(regex1) || c.matches(regex2)) {
                 res2 = true; 
             }
+            else {
+                res2 = false;
+                break;
+            }
         } 
+
          
-        if(!res1 || !res2) {
+        if(!res1 || !res2 || !res3) {
             res = false;
         }
 
@@ -113,8 +113,34 @@ public class Strings {
     }
 
     public static String[] stringWithTokens(String names) {
-        String[] tokens = names.split("[^A-Za-z0-9_$]+");
+        String[] tokens = names.split("[\\+-/\\*=\\(\\)\\s]+");
         return tokens;
+    }
+
+    public static boolean operators(String names) {
+        
+        String regex = "\\s";
+        String names1 = names.replaceAll(regex, "");
+        
+
+        char[] stroka = names1.toCharArray();
+        boolean res = true;
+
+        for(int i = 0; i < stroka.length; i++) {
+            if(stroka[i] == ('+' | '-' | '/' | '*' | '=')) {
+                if(i == 0 | i == stroka.length - 1) {
+                    res = false;
+                    break;
+                }
+                if((stroka[i-1] | stroka[i+1]) == ('+' | '-' | '/' | '*' | '=')) {
+                    res = false;
+                    break;
+                }
+                
+            }
+        }
+
+        return res;
     }
 
     public static boolean brackets(String names) {
