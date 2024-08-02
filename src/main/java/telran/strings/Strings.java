@@ -1,8 +1,14 @@
 package telran.strings;
 
 import java.util.Arrays;
+import java.util.regex.*;
 
 public class Strings {
+    static Pattern pattern;
+    static {
+        pattern = Pattern.compile(null);
+    }
+
     static final String keyWords[] = { "abstract", "assert", "boolean",
     "break", "byte", "case", "catch", "char", "class", "const",
     "continue", "default", "do", "double", "else", "enum", "extends", "false",
